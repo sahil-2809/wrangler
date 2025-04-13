@@ -13,8 +13,10 @@
  *  License for the specific language governing permissions and limitations under
  *  the License.
  */
-package io.cdap.wrangler.api.parser;
+package io.cdap.directives.aggregation;
 
+import io.cdap.wrangler.api.parser.TimeDuration;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +25,7 @@ public class TimeDurationTest {
 
     @Test
     public void testTimeDurationParsing() {
-        assertEquals(5000000, TimeDuration.parse("5ms").getNanos());
+        Assert.assertEquals(5000000, TimeDuration.parse("5ms").getNanos());
         assertEquals(2100000000, TimeDuration.parse("2.1s").getNanos());
         assertEquals(0, TimeDuration.parse("0s").getNanos());
     }
