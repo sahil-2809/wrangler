@@ -126,4 +126,9 @@ public interface Directive extends Executor<List<Row>, List<Row>>, EntityMetrics
     // no op
     return null;
   }
+
+    void initialize(Arguments args) throws DirectiveParseException;
+
+  List<Row> execute(List<Row> rows, ExecutorContext context) throws DirectiveExecutionException,
+          ErrorRowException, ReportErrorAndProceed;
 }

@@ -1,19 +1,53 @@
+/*
+ *  Copyright © 2017-2019 Cask Data, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ *  use this file except in compliance with the License. You may obtain a copy of
+ *  the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations under
+ *  the License.
+ */
+
 package io.cdap.directives.aggregation;
 
 import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.annotation.Plugin;
-import io.cdap.wrangler.api.*;
-import io.cdap.wrangler.api.annotations.Categories;
-import io.cdap.wrangler.api.parser.*;
+import io.cdap.wrangler.api.Arguments;
+import io.cdap.wrangler.api.Directive;
+import io.cdap.wrangler.api.DirectiveExecutionException;
+import io.cdap.wrangler.api.DirectiveParseException;
+import io.cdap.wrangler.api.ErrorRowException;
+import io.cdap.wrangler.api.ExecutorContext;
+import io.cdap.wrangler.api.Optional;
+import io.cdap.wrangler.api.ReportErrorAndProceed;
+import io.cdap.wrangler.api.Row;
+
+
+
+import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.ColumnName;
+import io.cdap.wrangler.api.parser.TimeDuration;
+import io.cdap.wrangler.api.parser.TokenType;
+import io.cdap.wrangler.api.parser.UsageDefinition;
+
+
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *
+ */
 @Plugin(type = Directive.TYPE)
 @Name(ByteSizeAndTimeDurationDirective.NAME)
-@Categories(categories = { "aggregation"})
 @Description("This directive should operate as an aggregate. So you need a store to\n" +
         "accumulate totals.")
 public class ByteSizeAndTimeDurationDirective implements Directive {
@@ -36,9 +70,9 @@ public class ByteSizeAndTimeDurationDirective implements Directive {
         builder.define("sourceTimeDuration", TokenType.COLUMN_NAME);
         builder.define("targetByteSize", TokenType.COLUMN_NAME);
         builder.define("targetTimeDuration", TokenType.COLUMN_NAME);
-        builder.define("sizeUnit", TokenType.COLUMN_NAME, "Output unit for size (B, KB, MB, GB).",Optional.TRUE);
-        builder.define("timeUnit", TokenType.COLUMN_NAME, "Output unit for time (ms, s, min).",Optional.TRUE);
-        builder.define("aggType",TokenType.COLUMN_NAME, "Aggregation type: total or average.",Optional.TRUE);
+        builder.define("sizeUnit", TokenType.COLUMN_NAME, "Output unit for size (B, KB, MB, GB).", Optional.TRUE);
+        builder.define("timeUnit", TokenType.COLUMN_NAME, "Output unit for time (ms, s, min).", Optional.TRUE);
+        builder.define("aggType", TokenType.COLUMN_NAME, "Aggregation type: total or average.", Optional.TRUE);
         return builder.build();
     }
 
@@ -68,7 +102,8 @@ public class ByteSizeAndTimeDurationDirective implements Directive {
     }
 
     @Override
-    public List<Row> execute(List<Row> rows, ExecutorContext context) throws DirectiveExecutionException, ErrorRowException, ReportErrorAndProceed {
+    public List<Row> execute(List<Row> rows, ExecutorContext context) throws DirectiveExecutionException,
+            ErrorRowException, ReportErrorAndProceed {
 
         long totalBytes = 0;
         long totalTimeNs = 0;

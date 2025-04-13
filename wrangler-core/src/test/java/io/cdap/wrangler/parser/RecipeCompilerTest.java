@@ -218,9 +218,11 @@ public class RecipeCompilerTest {
 
 
   @Test
-  public void testRecipeTimeAndByte() throws Exception {
+  public void testRecipeTimeAndByte() throws
+          Exception {
     String[] recipe = new String[]{
-            "aggregate-byte-time:sourceByteSize :sourceTimeDuration :targetByteSize :targetTimeDuration :sizeUnit :timeUnit :aggType"
+            "aggregate-byte-time:sourceByteSize :sourceTimeDuration " +
+                    ":targetByteSize :targetTimeDuration :sizeUnit :timeUnit :aggType"
     };
     CompileStatus compile = TestingRig.compile(recipe);
     Assert.assertTrue(true);
