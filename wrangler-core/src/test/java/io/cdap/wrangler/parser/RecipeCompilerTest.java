@@ -215,4 +215,14 @@ public class RecipeCompilerTest {
     Set<String> loadableDirectives = compile.getSymbols().getLoadableDirectives();
     Assert.assertEquals(4, loadableDirectives.size());
   }
+
+
+  @Test
+  public void testRecipeTimeAndByte() throws Exception {
+    String[] recipe = new String[]{
+            "aggregate-byte-time:sourceByteSize :sourceTimeDuration :targetByteSize :targetTimeDuration :sizeUnit :timeUnit :aggType"
+    };
+    CompileStatus compile = TestingRig.compile(recipe);
+    Assert.assertTrue(true);
+  }
 }

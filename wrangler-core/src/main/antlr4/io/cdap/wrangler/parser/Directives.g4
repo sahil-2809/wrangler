@@ -115,6 +115,9 @@ identifier
  : Identifier
  ;
 
+
+
+
 properties
  : 'prop' ':' OBrace (propertyList)+  CBrace
  | 'prop' ':' OBrace OBrace (propertyList)+ CBrace { notifyErrorListeners("Too many start paranthesis"); }
@@ -141,6 +144,14 @@ numberRange
 
 value
  : String | Number | Column | Bool
+ ;
+
+byteSizeArg
+ : BYTE_SIZE
+ ;
+
+timeDurationArg
+ : TIME_DURATION
  ;
 
 ecommand
@@ -247,6 +258,13 @@ BackSlash: '\\';
 Dollar   : '$';
 Tilde    : '~';
 
+BYTE_SIZE 
+ : Digit+ ('.' Digit+)? BYTE_UNIT
+ ;
+
+TIME_DURATION
+ : Digit+ ('.' Digit+)? TIME_UNIT
+ ;
 
 Bool
  : 'true'
@@ -311,3 +329,12 @@ fragment Int
 fragment Digit
  : [0-9]
  ;
+
+fragment BYTE_UNIT
+ : 'B' | 'KB' | 'MB' | 'GB' | 'TB' | 'kb' | 'b' | 'mb' | 'gb' | 'tb'
+ ;
+
+fragment TIME_UNIT
+ : 'ms' | 's' | 'm' | 'h' | 'd' | 'w'
+ ;
+ 
